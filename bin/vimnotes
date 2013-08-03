@@ -1,0 +1,79 @@
+#!/usr/bin/env ruby
+require 'optparse'
+require 'ostruct'
+require 'pathname'
+require 'date'
+
+@options = OpenStruct.new
+@options.new = false
+@options.directory = Pathname.new(ENV['HOME']) + 'Documents/Vimnotes'
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: vimnotes [options] filename"
+
+  opts.on("-n", "--new", "Create new file") do
+    @options.new = true
+  end
+
+  opts.on(
+    "-d",
+    "--directory <DIRECTORY>",
+    "Store notes in directory, defaults to #{@options.directory}"
+  ) do |directory|
+    @options.directory = directory
+  end
+
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+end.parse!(ARGV)
+
+if ARGV.empty? || ARGV.first.empty?
+  puts "Error: filename is mandatory.\n Use -h option for help"
+  exit(1)
+end
+@options.name = ARGV.first
+
+@options.directory.mkpath unless @options.directory.exist?
+
+def file_regexp
+  /#{@options.name}-([\d\-_\.]+)\.txt/
+end
+
+def latest_file
+  @options.directory.entries.select{ |entry| entry.to_s =~ file_regexp }.sort.last
+end
+
+def latest_file_today?
+  return unless latest_file
+  if latest_file.to_s =~ file_regexp
+    Date.parse($1) == Date.today
+  end
+end
+
+def file_to_edit
+  if @options.new
+    if latest_file_today?
+      "#{@options.name}-#{Time.now.strftime('%Y-%m-%d_%H.%M.%S')}.txt"
+    else
+      "#{@options.name}-#{Date.today}.txt"
+    end
+  else
+    if latest_file
+      latest_file
+    else
+      "#{@options.name}-#{Date.today}.txt"
+    end
+  end
+end
+
+command = "vim #{file_to_edit}"
+if ENV['VIMNOTES_ENV'] == 'test'
+  puts command
+else
+  if @options.new || !latest_file
+    `echo "# #{@options.name}\n# Created at: #{Time.now.strftime('%Y-%m-%d %H:%M:%S')}\n" >> #{file_to_edit}`
+  end
+  exec command
+end

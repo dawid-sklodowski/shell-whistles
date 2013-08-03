@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+require 'pathname'
+bin_path = Pathname.new(File.expand_path(__FILE__)) + '../bin'
+
+unless File.read(Pathname.new(ENV['HOME']) + '.bash_profile').include?(bin_path)
+  exec %Q{echo 'export PATH="#{bin_path}:$PATH"' >> $HOME/.bash_profile}
+end
