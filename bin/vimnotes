@@ -20,7 +20,7 @@ OptionParser.new do |opts|
     "--directory <DIRECTORY>",
     "Store notes in directory, defaults to #{@options.directory}"
   ) do |directory|
-    @options.directory = directory
+    @options.directory = Pathname.new(directory)
   end
 
   opts.on_tail("-h", "--help", "Show this message") do
@@ -53,20 +53,21 @@ def latest_file_today?
 end
 
 def file_to_edit
-  @options.directory +
-  if @options.new
-    if latest_file_today?
-      "#{@options.name}-#{Time.now.strftime('%Y-%m-%d_%H.%M.%S')}.txt"
+  @options.directory + (
+    if @options.new
+      if latest_file_today?
+        "#{@options.name}-#{Time.now.strftime('%Y-%m-%d_%H.%M.%S')}.txt"
+      else
+        "#{@options.name}-#{Date.today}.txt"
+      end
     else
-      "#{@options.name}-#{Date.today}.txt"
+      if latest_file
+        latest_file
+      else
+        "#{@options.name}-#{Date.today}.txt"
+      end
     end
-  else
-    if latest_file
-      latest_file
-    else
-      "#{@options.name}-#{Date.today}.txt"
-    end
-  end
+  )
 end
 
 command = "vim #{file_to_edit}"
