@@ -1,5 +1,4 @@
 require 'fileutils'
-require 'pry'
 ENV['VIMNOTES_ENV'] = 'test'
 describe 'vimnotes' do
   ROOT = Pathname.new(File.expand_path(__FILE__)) + '..' + '..' + '..'
