@@ -75,7 +75,7 @@ if ENV['VIMNOTES_ENV'] == 'test'
   puts command
 else
   if @options.new || !latest_file
-    `echo "# #{@options.name}\n# Created at: #{Time.now.strftime('%Y-%m-%d %H:%M:%S')}\n" >> #{file_to_edit}`
+    `echo "# #{@options.name} -- created at: #{Time.now.strftime('%Y-%m-%d %H:%M:%S')}\n" >> #{file_to_edit}`
   end
   exec command
 end
