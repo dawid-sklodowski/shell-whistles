@@ -38,7 +38,7 @@ end
 @options.directory.mkpath unless @options.directory.exist?
 
 def file_regexp
-  /#{@options.name}-([\d\-_\.]+)\.txt$/
+  /^#{@options.name}-([\d\-_\.]+)\.txt$/
 end
 
 def latest_file

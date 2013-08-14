@@ -34,6 +34,12 @@ describe 'vimnotes' do
     run('test_file').should =~ /test_file-#{Time.now.strftime('%Y-%m-%d')}.txt$/
   end
 
+  it 'does not open files having part of name' do
+    TEST_DIR.mkpath
+    (TEST_DIR + 'atest_file-2010-04-27.txt').open('w') { |file| file << 'test' }
+    run('test_file').should =~ /test_file-#{Time.now.strftime('%Y-%m-%d')}.txt$/
+  end
+
   describe '-n option' do
     it 'creates new file if none exist' do
       run('-n test_file').should =~ /test_file-#{Time.now.strftime('%Y-%m-%d')}/
