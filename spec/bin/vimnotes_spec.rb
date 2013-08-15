@@ -40,6 +40,10 @@ describe 'vimnotes' do
     run('test_file').should =~ /test_file-#{Time.now.strftime('%Y-%m-%d')}.txt$/
   end
 
+  it 'sets vim current dir to Vimnotes dir' do
+    run('test_file').should =~ /-c ':lcd #{TEST_DIR}'/
+  end
+
   describe '-n option' do
     it 'creates new file if none exist' do
       run('-n test_file').should =~ /test_file-#{Time.now.strftime('%Y-%m-%d')}/

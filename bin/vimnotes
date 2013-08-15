@@ -70,7 +70,7 @@ def file_to_edit
   )
 end
 
-command = "vim #{file_to_edit}"
+command = "vim -c ':lcd #{@options.directory}' #{file_to_edit}"
 if ENV['VIMNOTES_ENV'] == 'test'
   puts command
 else
