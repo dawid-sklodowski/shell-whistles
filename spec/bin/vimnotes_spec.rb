@@ -12,6 +12,10 @@ describe 'vimnotes' do
     FileUtils.rm_rf TEST_DIR
   end
 
+  after(:all) do
+    FileUtils.rm_rf TEST_DIR
+  end
+
   it 'creates directory if needed' do
     TEST_DIR.should_not be_exist
     run('test')
