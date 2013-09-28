@@ -1,46 +1,6 @@
 #!/usr/bin/env ruby
 $:.unshift File.expand_path('../../lib', __FILE__)
-require 'optparse'
-require 'ostruct'
-require 'pathname'
 require 'date'
 require 'vimnotes'
 
-@options = OpenStruct.new
-@options.new = false
-@options.directory = Pathname.new(ENV['HOME']) + 'Documents/Vimnotes'
-@options.command = 'open'
-
-OptionParser.new do |opts|
-  opts.banner = "Usage: vimnotes [options] filename"
-
-  opts.on("-n", "--new", "Create new file") do
-    @options.new = true
-  end
-
-  opts.on(
-    "-d",
-    "--directory <DIRECTORY>",
-    "Store notes in directory, defaults to #{@options.directory}"
-  ) do |directory|
-    @options.directory = Pathname.new(directory)
-  end
-
-  opts.on('--init', 'Links stuff') do
-    @options.command = 'init'
-  end
-
-  opts.on_tail("-h", "--help", "Show this message") do
-    puts opts
-    exit
-  end
-
-end.parse!(ARGV)
-
-if ARGV.empty? || ARGV.first.empty?
-  puts "Error: filename is mandatory.\n Use -h option for help"
-  exit(1)
-end
-@options.name = ARGV.first
-
-Vimnotes.new(@options).execute
+Vimnotes.run(ARGV)

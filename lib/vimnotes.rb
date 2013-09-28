@@ -1,4 +1,13 @@
+require 'vimnotes/option_parser'
 class Vimnotes
+  Error = Class.new(StandardError)
+
+  def self.run(argv)
+    new(Vimnotes::OptionParser.parse(argv)).execute
+  rescue Vimnotes::Error => e
+    puts "Error: #{e.message}"
+    exit(1)
+  end
 
   def initialize(options)
     @options = options
