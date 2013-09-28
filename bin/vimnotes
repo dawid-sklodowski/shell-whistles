@@ -1,12 +1,15 @@
 #!/usr/bin/env ruby
+$:.unshift File.expand_path('../../lib', __FILE__)
 require 'optparse'
 require 'ostruct'
 require 'pathname'
 require 'date'
+require 'vimnotes'
 
 @options = OpenStruct.new
 @options.new = false
 @options.directory = Pathname.new(ENV['HOME']) + 'Documents/Vimnotes'
+@options.command = 'open'
 
 OptionParser.new do |opts|
   opts.banner = "Usage: vimnotes [options] filename"
@@ -23,10 +26,15 @@ OptionParser.new do |opts|
     @options.directory = Pathname.new(directory)
   end
 
+  opts.on('--init', 'Links stuff') do
+    @options.command = 'init'
+  end
+
   opts.on_tail("-h", "--help", "Show this message") do
     puts opts
     exit
   end
+
 end.parse!(ARGV)
 
 if ARGV.empty? || ARGV.first.empty?
@@ -35,47 +43,4 @@ if ARGV.empty? || ARGV.first.empty?
 end
 @options.name = ARGV.first
 
-@options.directory.mkpath unless @options.directory.exist?
-
-def file_regexp
-  /^#{@options.name}-([\d\-_\.]+)\.txt$/
-end
-
-def latest_file
-  @options.directory.entries.select{ |entry| entry.to_s =~ file_regexp }.sort.last
-end
-
-def latest_file_today?
-  return unless latest_file
-  if latest_file.to_s =~ file_regexp
-    Date.parse($1) == Date.today
-  end
-end
-
-def file_to_edit
-  @options.directory + (
-    if @options.new
-      if latest_file_today?
-        "#{@options.name}-#{Time.now.strftime('%Y-%m-%d_%H.%M.%S')}.txt"
-      else
-        "#{@options.name}-#{Date.today}.txt"
-      end
-    else
-      if latest_file
-        latest_file
-      else
-        "#{@options.name}-#{Date.today}.txt"
-      end
-    end
-  )
-end
-
-command = "vim -c ':lcd #{@options.directory}' #{file_to_edit}"
-if ENV['VIMNOTES_ENV'] == 'test'
-  puts command
-else
-  if @options.new || !latest_file
-    `echo "# #{@options.name} -- created at: #{Time.now.strftime('%Y-%m-%d %H:%M:%S')}\n" >> #{file_to_edit}`
-  end
-  exec command
-end
+Vimnotes.new(@options).execute
