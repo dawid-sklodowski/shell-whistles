@@ -1,5 +1,5 @@
-shell-whistles
+vimnotes
 ==============
 
-[![Build Status](https://travis-ci.org/dawid-sklodowski/shell-whistles.png)](https://travis-ci.org/dawid-sklodowski/shell-whistles)
+[![Build Status](https://travis-ci.org/dawid-sklodowski/vimnotes.png)](https://travis-ci.org/dawid-sklodowski/vimnotes)
 
