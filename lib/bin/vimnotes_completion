@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+$:.unshift File.expand_path('../..', __FILE__)
+require 'vimnotes'
+puts Vimnotes::Completion.complete(ENV['COMP_LINE'], ARGV)

@@ -1,4 +1,10 @@
 require 'vimnotes/option_parser'
+require 'vimnotes/completion'
+require 'vimnotes/system'
+require 'vimnotes/init'
+require 'date'
+require 'pry'
+
 class Vimnotes
   Error = Class.new(StandardError)
 
@@ -25,23 +31,17 @@ class Vimnotes
   end
 
   def init
-
+    Vimnotes::Init.new(@options).init
   end
 
   def open
+    raise Vimnotes::Error, "Filename is mandatory.\n Use -h for help" unless @options.argument
     command = "vim -c ':lcd #{@options.directory}' #{file_to_edit}"
-    if ENV['VIMNOTES_ENV'] == 'test'
-      puts command
-    else
-      if @options.new || !latest_file
-        `echo "# #{@options.name} -- created at: #{Time.now.strftime('%Y-%m-%d %H:%M:%S')}\n" >> #{file_to_edit}`
-      end
-      exec command
-    end
+    Vimnotes::System.execute(command, true)
   end
 
   def file_regexp
-    /^#{@options.name}-([\d\-_\.]+)\.txt$/
+    /^#{@options.argument}-([\d\-_\.]+)\.txt$/
   end
 
   def latest_file
@@ -59,18 +59,17 @@ class Vimnotes
     @options.directory + (
     if @options.new
       if latest_file_today?
-        "#{@options.name}-#{Time.now.strftime('%Y-%m-%d_%H.%M.%S')}.txt"
+        "#{@options.argument}-#{Time.now.strftime('%Y-%m-%d_%H.%M.%S')}.txt"
       else
-        "#{@options.name}-#{Date.today}.txt"
+        "#{@options.argument}-#{Date.today}.txt"
       end
     else
       if latest_file
         latest_file
       else
-        "#{@options.name}-#{Date.today}.txt"
+        "#{@options.argument}-#{Date.today}.txt"
       end
     end
     )
   end
-
 end

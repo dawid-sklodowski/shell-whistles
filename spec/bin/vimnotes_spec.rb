@@ -1,20 +1,10 @@
-require 'fileutils'
-ENV['VIMNOTES_ENV'] = 'test'
+require 'spec_helper'
 describe 'vimnotes' do
-  ROOT = Pathname.new(File.expand_path(__FILE__)) + '..' + '..' + '..'
-  TEST_DIR = ROOT + 'test_tmp'
 
   def run(options)
-    `#{ROOT + 'bin' + 'vimnotes'} -d #{TEST_DIR} #{options}`
+    `#{Vimnotes::System::ROOT + 'bin' + 'vimnotes'} -d #{TEST_DIR} #{options}`
   end
 
-  before(:each) do
-    FileUtils.rm_rf TEST_DIR
-  end
-
-  after(:all) do
-    FileUtils.rm_rf TEST_DIR
-  end
 
   it 'creates directory if needed' do
     TEST_DIR.should_not be_exist

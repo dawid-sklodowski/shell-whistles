@@ -33,7 +33,11 @@ class Vimnotes
           @options.directory = Pathname.new(directory)
         end
 
-        opts.on('--init', 'Links stuff') do
+        opts.on('--no-v', 'Init without v command') do
+          @options.no_v = true
+        end
+
+        opts.on('--init', 'Links stuff') do |silent|
           @options.command = 'init'
         end
 
@@ -43,10 +47,7 @@ class Vimnotes
         end
       end.parse!(argv)
 
-      if argv.empty? || argv.first.empty?
-        raise Vimnotes::Error, "Filename is mandatory.\n Use -h option for help"
-      end
-      @options.name = argv.first
+      @options.argument = argv.first
     end
   end
 end
