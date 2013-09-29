@@ -4,7 +4,6 @@ class Vimnotes
 
     ROOT = Pathname.new(File.expand_path(__FILE__)) + '..' + '..' + '..'
     def execute(command, final = false)
-      puts command
       if ENV['VIMNOTES_ENV'] == 'test'
         puts command
       else
