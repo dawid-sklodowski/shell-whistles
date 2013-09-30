@@ -35,10 +35,22 @@ class Vimnotes
   end
 
   def open
-    raise Vimnotes::Error, "Filename is mandatory.\n Use -h for help" unless @options.argument
+    mandatory_filename
     command = "vim -c ':lcd #{@options.directory}' #{file_to_edit}"
     Vimnotes::System.execute(command, true)
   end
+
+  def delete
+    mandatory_filename
+    command = "rm #{@options.directory + file_to_edit}" 
+    puts command
+    Vimnotes::System.execute(command, true)
+  end
+
+  def mandatory_filename
+    raise Vimnotes::Error, "Filename is mandatory.\n Use -h for help" unless @options.argument
+  end
+
 
   def file_regexp
     /^#{@options.argument}-([\d\-_\.]+)\.txt$/

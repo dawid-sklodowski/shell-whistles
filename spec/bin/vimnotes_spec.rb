@@ -2,7 +2,7 @@ require 'spec_helper'
 describe 'vimnotes' do
 
   def run(options)
-    `#{Vimnotes::System::ROOT + 'bin' + 'vimnotes'} -d #{TEST_DIR} #{options}`
+    `#{Vimnotes::System::ROOT + 'bin' + 'vimnotes'} -D #{TEST_DIR} #{options}`
   end
 
 
@@ -53,6 +53,14 @@ describe 'vimnotes' do
       TEST_DIR.mkpath
       (TEST_DIR + "test_file-#{Time.now.strftime('%Y-%m-%d')}.txt").open('w') { |file| file << 'test' }
       run('-n test_file').should =~ /test_file-#{Time.now.strftime('%Y-%m-%d')}_\d{2}\.\d{2}\.\d{2}\.txt/
+    end
+  end
+
+  describe 'deleting files' do
+    it('deletes given file') do
+      TEST_DIR.mkpath
+      (TEST_DIR + 'test_file-2010-04-27.txt').open('w') { |file| file << 'test' }
+      run('-d test_file').should =~ /^rm .+test_file-2010-04-27\.txt/
     end
   end
 end

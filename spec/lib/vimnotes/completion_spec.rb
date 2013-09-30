@@ -5,7 +5,7 @@ describe Vimnotes::Completion do
     TEST_DIR.mkdir
   end
 
-  let(:argv) { ['name', '-d', TEST_DIR.to_s] }
+  let(:argv) { ['name', '-D', TEST_DIR.to_s] }
 
   it 'returns all files when no letter yet' do
     (TEST_DIR + "one-#{Date.today}.txt").open('w'){}

@@ -26,12 +26,17 @@ class Vimnotes
         end
 
         opts.on(
-          "-d",
+          "-D",
           "--directory <DIRECTORY>",
           "Store notes in directory, defaults to #{@options.directory}"
         ) do |directory|
           @options.directory = Pathname.new(directory)
         end
+
+        opts.on('-d', '--delete', 'Deletes notes file') do
+          @options.command = 'delete'
+        end
+
 
         opts.on('--no-v', 'Init without v command') do
           @options.no_v = true
