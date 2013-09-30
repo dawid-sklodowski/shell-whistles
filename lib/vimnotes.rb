@@ -43,7 +43,12 @@ class Vimnotes
   def delete
     mandatory_filename
     command = "rm #{@options.directory + file_to_edit}" 
-    puts command
+    Vimnotes::System.execute(command, true)
+  end
+
+  def cat
+    mandatory_filename
+    command = "cat #{@options.directory + file_to_edit}" 
     Vimnotes::System.execute(command, true)
   end
 

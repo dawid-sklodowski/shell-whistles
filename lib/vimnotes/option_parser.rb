@@ -37,6 +37,10 @@ class Vimnotes
           @options.command = 'delete'
         end
 
+        opts.on('-c', '--cat', 'Cat file') do
+          @options.command = 'cat'
+        end
+
 
         opts.on('--no-v', 'Init without v command') do
           @options.no_v = true

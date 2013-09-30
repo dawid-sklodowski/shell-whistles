@@ -63,4 +63,12 @@ describe 'vimnotes' do
       run('-d test_file').should =~ /^rm .+test_file-2010-04-27\.txt/
     end
   end
+
+  describe 'cat' do
+    it('cats given file') do
+      TEST_DIR.mkpath
+      (TEST_DIR + 'test_file-2010-04-27.txt').open('w') { |file| file << 'test' }
+      run('-c test_file').should =~ /^cat .+test_file-2010-04-27\.txt/
+    end
+  end
 end
