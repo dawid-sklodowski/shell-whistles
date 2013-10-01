@@ -1,4 +1,6 @@
 require 'spec_helper'
+require 'vimnotes'
+
 describe 'vimnotes' do
 
   def run(options)

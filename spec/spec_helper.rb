@@ -2,7 +2,6 @@ $:.unshift File.expand_path('../../lib', __FILE__)
 require 'vimnotes'
 require 'pry'
 require 'fileutils'
-require 'date'
 
 ENV['VIMNOTES_ENV'] = 'test'
 TEST_DIR = Vimnotes::System::ROOT + 'test_tmp'

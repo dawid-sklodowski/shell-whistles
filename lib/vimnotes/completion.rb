@@ -1,9 +1,13 @@
+require 'vimnotes/option_parser'
+
 class Vimnotes
   class Completion
     FILE_PATTERN = /(.+)-\d{4}-\d{2}-\d{2}[\d\-_\.]*\.txt/
 
     def self.complete(completion_line, argv=[])
       new(completion_line, Vimnotes::OptionParser.parse(argv)).complete
+    rescue ::OptionParser::InvalidOption
+      nil
     end
 
     def initialize(completion_line, options)

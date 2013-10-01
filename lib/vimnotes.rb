@@ -1,9 +1,7 @@
 require 'vimnotes/option_parser'
-require 'vimnotes/completion'
 require 'vimnotes/system'
 require 'vimnotes/init'
 require 'date'
-require 'pry'
 
 class Vimnotes
   Error = Class.new(StandardError)

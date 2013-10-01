@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'vimnotes/completion'
 
 describe Vimnotes::Completion do
   before :each do
